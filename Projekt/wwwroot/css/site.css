@@ -1,0 +1,75 @@
+/* 
+    Paleta:
+    https://colorhunt.co/palette/2e073f7a1cacad49e1ebd3f8
+*/
+
+:root {
+    --dark-color: #2E073F;
+    --light-color: #EBD3F8;
+    --middle-color: #7A1CAC;
+    --accent-color: #AD49E1;
+}
+
+/* Reset css */
+body, header h1, div, p {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+    font-size: 16px;
+}
+
+body {
+    display: grid;
+    grid-template-rows: min-content 1fr min-content;
+    min-height: 100vh;
+}
+
+header {
+    grid-column: 1 / -1;
+    padding: 1rem;
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    display: flex;
+    align-items: center;
+}
+
+    header h1 {
+        padding-right: 2rem;
+        color: palegoldenrod;
+    }
+
+    header nav a, header nav span {
+        margin-left: 1em;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    header nav a {
+        text-decoration: none;
+        color: var(--accent-color);
+    }
+
+    header nav span {
+        color: white;
+    }
+
+main {
+    grid-column: 1 / -1;
+    padding: 1rem;
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    overflow-x: auto;
+    text-align: center;
+}
+
+footer {
+    grid-column: 1 / -1;
+    font-size: .8rem;
+    padding: .4rem;
+    background-color: var(--middle-color);
+    color: var(--light-color);
+    text-align: center;
+}

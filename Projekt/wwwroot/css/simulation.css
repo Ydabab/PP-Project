@@ -1,0 +1,55 @@
+﻿.map {
+    display: grid;
+    grid-template-columns: max-content repeat(8, max-content);
+    grid-template-rows: repeat(6, 1fr) max-content;
+    max-width: 800px;
+    max-height: 600px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+
+.map > div {
+    background-color: #558b2f;
+    outline: 1px dashed #112d4e;
+    min-width: 80px;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.map > p {
+    padding-right: .4rem;
+}
+
+.map > span {
+    padding-top: .2rem;
+}
+
+
+.map-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-left: 1rem;
+}
+
+.turn {
+    min-width: 11rem;
+}
+
+button {
+    min-width: 4rem;
+    min-height: 3rem;
+    font-size: 1.6rem;
+}
+
+img {
+    max-width: 4rem;
+    max-height: 4rem;
+}
