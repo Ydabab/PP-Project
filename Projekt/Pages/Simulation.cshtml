@@ -14,18 +14,26 @@
         </style>
 
         <div class="map-header">
-            <form method="post" asp-page-handler="Previous">
+            <form method="post" asp-page-handler="Left">
                 <button type="submit">&larr;</button>
                 @Html.AntiForgeryToken()
             </form>
 
-            <!-- Turn Counter -->
+            <form method="post" asp-page-handler="Up">
+                <button type="submit">&uarr;</button>
+                @Html.AntiForgeryToken()
+            </form>
+
             <div class="turn">
                 Tura @Model.CurrentTurn
             </div>
 
-            <!-- Next Button Form -->
-            <form method="post" asp-page-handler="Next">
+            <form method="post" asp-page-handler="Down">
+                <button type="submit">&darr;</button>
+                @Html.AntiForgeryToken()
+            </form>
+
+            <form method="post" asp-page-handler="Right">
                 <button type="submit">&rarr;</button>
                 @Html.AntiForgeryToken()
             </form>
@@ -44,17 +52,17 @@
                         }
                         else
                         {
-                            <div></div>
-                                <style>
-                                    .map {
-                                        display: grid;
-                                        grid-template-columns: max-content repeat(8, max-content);
-                                        grid-template-rows: repeat(6, 1fr) max-content;
-                                        max-width: 800px; /* Ustaw maksymalną szerokość */
-                                        max-height: 600px; /* Ustaw maksymalną wysokość */
-                                        margin: 0 auto; /* Wyśrodkuj grid */
-                                    }
-                                </style>
+                        <div></div>
+                            <style>
+                                .map {
+                                    display: grid;
+                                    grid-template-columns: max-content repeat(8, max-content);
+                                    grid-template-rows: repeat(6, 1fr) max-content;
+                                    max-width: 800px; /* Ustaw maksymalną szerokość */
+                                    max-height: 600px; /* Ustaw maksymalną wysokość */
+                                    margin: 0 auto; /* Wyśrodkuj grid */
+                                }
+                            </style>
                         }
                     </div>
                 }

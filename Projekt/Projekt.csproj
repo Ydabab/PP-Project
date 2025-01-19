@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SimConsole\SimConsole.csproj" />
     <ProjectReference Include="..\Simulator\Simulator.csproj" />
   </ItemGroup>
 

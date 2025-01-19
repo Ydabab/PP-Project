@@ -12,7 +12,7 @@ class Program
         BigTorusMap map = new(8, 6);
         List<IMappable> mappables = new() { new Orc("Gorbag"), new Elf("Elandor"), new Animals("Rabbits", 8), new Birds("Eagle", 14, true), new Birds("Ostrich", 2, false) };
         List<Point> points = new() { new(0, 0), new(0, 1), new(0, 2), new(0, 3), new(0, 4) };
-        string moves = "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr";
+        List<char> moves = new List<char> {'U'};
 
         Simulation simulation = new(map, mappables, points, moves);
         MapVisualizer mapVisualizer = new(simulation.Map);

@@ -10,8 +10,8 @@ namespace SimWeb.Pages
     public class SimulationModel : PageModel
     {
         private static Simulation _simulation;
-        private static SimulationHistory _history;
         private static int _currentTurn = 0;
+        private static List<char> moves = new List<char>();
 
         public Dictionary<Point, List<char>>? Symbols { get; private set; }
         public int SizeX { get; private set; }
@@ -26,21 +26,19 @@ namespace SimWeb.Pages
             {
                 BigBounceMap map = new(8, 6);
                 List<IMappable> creatures = new List<IMappable>
-                {
-                    new Orc("Gorbag"),
-                    new Elf("Elandor"),
-                    new Animals("Rabbits", 23),
-                    new Birds("Eagles", 3),
-                    new Birds("Ostriches", 15, false)
-                };
+                            {
+                                new Orc("Gorbag"),
+                                new Elf("Elandor"),
+                                new Animals("Rabbits", 23),
+                                new Birds("Eagles", 3),
+                                new Birds("Ostriches", 15, false)
+                            };
                 List<Point> points = new List<Point>
-                {
-                    new(0, 0), new(0, 1), new(0, 2), new(0, 3), new(0, 4)
-                };
-                string moves = "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr";
+                            {
+                                new(0, 0), new(0, 1), new(0, 2), new(0, 3), new(0, 4)
+                            };
 
                 _simulation = new Simulation(map, creatures, points, moves);
-                _history = new SimulationHistory(_simulation);
                 SizeX = map.SizeX;
                 SizeY = map.SizeY;
             }
@@ -49,35 +47,64 @@ namespace SimWeb.Pages
             GenerateMapGrid();
         }
 
-        public IActionResult OnPostNext()
+        public IActionResult OnPostRight()
         {
-            if (_currentTurn < _history.TurnLogs.Count - 1)
-            {
-                _currentTurn++;
-                UpdateSymbols();
-                GenerateMapGrid();
-            }
-
+            moves.Add('R');
+            _currentTurn++;
+            UpdateSymbols();
+            GenerateMapGrid();
             return Page();
         }
 
-        public IActionResult OnPostPrevious()
+        public IActionResult OnPostLeft()
         {
-            if (_currentTurn > 0)
-            {
-                _currentTurn--;
-                UpdateSymbols();
-                GenerateMapGrid();
-            }
-
+            moves.Add('L');
+            _currentTurn++;
+            UpdateSymbols();
+            GenerateMapGrid();
             return Page();
         }
+        public IActionResult OnPostUp()
+        {
+            moves.Add('U');
+            _currentTurn++;
+            UpdateSymbols();
+            GenerateMapGrid();
+            return Page();
+        }
+        public IActionResult OnPostDown()
+        {
+            moves.Add('D');
+            _currentTurn++;
+            UpdateSymbols();
+            GenerateMapGrid();
+            return Page();
+        }
+
         private void UpdateSymbols()
         {
-            Symbols = _history.TurnLogs[_currentTurn].Symbols;
-            SizeX = _history.SizeX;
-            SizeY = _history.SizeY;
+
+            // Zaktualizuj symbole na podstawie aktualnych pozycji stworów
+            Symbols = new Dictionary<Point, List<char>>();
+            foreach (var mappable in _simulation.IMappables)
+            {
+                if (!Symbols.ContainsKey(mappable.Position))
+                {
+                    Symbols[mappable.Position] = new List<char>();
+                }
+                Symbols[mappable.Position].Add(mappable.Symbol);
+            }
+
+            SizeX = _simulation.Map.SizeX;
+            SizeY = _simulation.Map.SizeY;
+
+            // Wykonaj turê dla ka¿dego ruchu
+            foreach (var move in moves)
+            {
+                _simulation.Turn();
+            }
         }
+
         private void GenerateMapGrid()
         {
             MapGrid.Clear();
@@ -101,6 +128,7 @@ namespace SimWeb.Pages
                 MapGrid.Add(rowGrid);
             }
         }
+
         public string GetImageSource(List<char> creatures)
         {
             if (creatures.Contains('A'))

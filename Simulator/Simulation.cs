@@ -24,7 +24,7 @@ public class Simulation
     /// When all mappables make moves, 
     /// next move is again for first mappable and so on.
     /// </summary>
-    public string Moves { get; }
+    public List<char> Moves { get; }
 
     /// <summary>
     /// Has all moves been done?
@@ -50,7 +50,7 @@ public class Simulation
     /// if number of mappables differs from 
     /// number of starting positions.
     /// </summary>
-    public Simulation(Map map, List<IMappable> mappables, List<Point> positions, string moves)
+    public Simulation(Map map, List<IMappable> mappables, List<Point> positions, List<char> moves)
     {
         if (mappables == null || mappables.Count == 0)
         {
@@ -73,10 +73,10 @@ public class Simulation
             .Select(d => d[0])
             .ToList();
 
-        if (FilteredMoves.Count == 0)
-        {
-            throw new ArgumentException("Moves must contain at least one valid direction.");
-        }
+        //if (FilteredMoves.Count == 0)
+        //{
+        //    throw new ArgumentException("Moves must contain at least one valid direction.");
+        //}
 
         for (int i = 0; i < mappables.Count; i++)
         {
@@ -102,10 +102,6 @@ public class Simulation
     /// </summary>
     public void Turn()
     {
-        if (Finished)
-        {
-            throw new InvalidOperationException("The simulation is already finished.");
-        }
         if (_currentMoveIndex >= FilteredMoves.Count)
         {
             Finished = true;
