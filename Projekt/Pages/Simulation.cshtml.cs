@@ -26,17 +26,17 @@ namespace SimWeb.Pages
             {
                 BigBounceMap map = new(8, 6);
                 List<IMappable> creatures = new List<IMappable>
-                            {
-                                new Orc("Gorbag"),
-                                new Elf("Elandor"),
-                                new Animals("Rabbits", 23),
-                                new Birds("Eagles", 3),
-                                new Birds("Ostriches", 15, false)
-                            };
+                                {
+                                    new Orc("Gorbag"),
+                                    new Elf("Elandor"),
+                                    new Animals("Rabbits", 23),
+                                    new Birds("Eagles", 3),
+                                    new Birds("Ostriches", 15, false)
+                                };
                 List<Point> points = new List<Point>
-                            {
-                                new(0, 0), new(0, 1), new(0, 2), new(0, 3), new(0, 4)
-                            };
+                                {
+                                    new(0, 0), new(0, 1), new(0, 2), new(0, 3), new(0, 4)
+                                };
 
                 _simulation = new Simulation(map, creatures, points, moves);
                 SizeX = map.SizeX;
@@ -51,6 +51,7 @@ namespace SimWeb.Pages
         {
             moves.Add('R');
             _currentTurn++;
+            _simulation.Turn();
             UpdateSymbols();
             GenerateMapGrid();
             return Page();
@@ -60,22 +61,25 @@ namespace SimWeb.Pages
         {
             moves.Add('L');
             _currentTurn++;
+            _simulation.Turn();
             UpdateSymbols();
             GenerateMapGrid();
             return Page();
         }
         public IActionResult OnPostUp()
         {
-            moves.Add('U');
+            moves.Add('D');
             _currentTurn++;
+            _simulation.Turn();
             UpdateSymbols();
             GenerateMapGrid();
             return Page();
         }
         public IActionResult OnPostDown()
         {
-            moves.Add('D');
+            moves.Add('U');
             _currentTurn++;
+            _simulation.Turn();
             UpdateSymbols();
             GenerateMapGrid();
             return Page();
@@ -83,7 +87,6 @@ namespace SimWeb.Pages
 
         private void UpdateSymbols()
         {
-
             // Zaktualizuj symbole na podstawie aktualnych pozycji stworów
             Symbols = new Dictionary<Point, List<char>>();
             foreach (var mappable in _simulation.IMappables)
@@ -97,12 +100,6 @@ namespace SimWeb.Pages
 
             SizeX = _simulation.Map.SizeX;
             SizeY = _simulation.Map.SizeY;
-
-            // Wykonaj turê dla ka¿dego ruchu
-            foreach (var move in moves)
-            {
-                _simulation.Turn();
-            }
         }
 
         private void GenerateMapGrid()

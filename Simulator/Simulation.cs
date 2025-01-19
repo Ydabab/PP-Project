@@ -29,8 +29,7 @@ public class Simulation
     /// <summary>
     /// Has all moves been done?
     /// </summary>
-    public bool Finished { get; private set; } = false;
-    private List<Direction> FilteredMoves { get; }
+    private List<Direction> FilteredMoves { get; set; } = new List<Direction>();
     private int _currentMoveIndex = 0;
 
     /// <summary>
@@ -67,16 +66,7 @@ public class Simulation
         Positions = positions;
         Moves = moves ?? throw new ArgumentNullException(nameof(moves));
 
-        FilteredMoves = Moves
-            .Select(c => DirectionParser.Parse(c.ToString().ToLower()))
-            .Where(d => d != null && d.Count > 0)
-            .Select(d => d[0])
-            .ToList();
-
-        //if (FilteredMoves.Count == 0)
-        //{
-        //    throw new ArgumentException("Moves must contain at least one valid direction.");
-        //}
+        FilterMoves();
 
         for (int i = 0; i < mappables.Count; i++)
         {
@@ -102,17 +92,18 @@ public class Simulation
     /// </summary>
     public void Turn()
     {
-        if (_currentMoveIndex >= FilteredMoves.Count)
-        {
-            Finished = true;
-            return;
-        }
+        FilterMoves();
         Direction direction = FilteredMoves[_currentMoveIndex];
         CurrentMappable.Go(direction);
         _currentMoveIndex++;
-        if (_currentMoveIndex >= FilteredMoves.Count)
-        {
-            Finished = true;
-        }
+    }
+
+    private void FilterMoves()
+    {
+        FilteredMoves = Moves
+            .Select(c => DirectionParser.Parse(c.ToString().ToLower()))
+            .Where(d => d != null && d.Count > 0)
+            .Select(d => d[0])
+            .ToList();
     }
 }
