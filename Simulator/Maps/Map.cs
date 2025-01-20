@@ -46,8 +46,6 @@ public abstract class Map
 
     public void Add(IMappable mappable, Point point)
     {
-        if (!Exist(point))
-            throw new ArgumentException($"Punkt {point} jest poza granicami mapy.");
         if (!mappablesFields.ContainsKey(point))
         {
             mappablesFields[point] = new List<IMappable>();

@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Simulator;
-using System.Linq;
-using System.Collections.Generic;
 using Simulator.Maps;
 
 namespace SimWeb.Pages
@@ -12,37 +10,30 @@ namespace SimWeb.Pages
         private static Simulation _simulation;
         private static int _currentTurn = 0;
         private static List<char> moves = new List<char>();
-
+        List<IMappable> creatures = new List<IMappable> {
+                                    new Orc("Gorbag"),
+                                    new Elf("Elandor"),
+                                    new Animals("Rabbits", 23),
+                                    new Birds("Eagles", 3),
+                                    new Birds("Ostriches", 15, false) };
         public Dictionary<Point, List<char>>? Symbols { get; private set; }
         public int SizeX { get; private set; }
         public int SizeY { get; private set; }
         public int CurrentTurn => _currentTurn;
+        public int CurrentRound => _currentTurn / creatures.Count;
 
         public List<List<CreatureAtPoint>> MapGrid { get; set; } = new();
 
         public void OnGet()
         {
-            if (_simulation == null)
-            {
-                BigBounceMap map = new(8, 6);
-                List<IMappable> creatures = new List<IMappable>
-                                {
-                                    new Orc("Gorbag"),
-                                    new Elf("Elandor"),
-                                    new Animals("Rabbits", 23),
-                                    new Birds("Eagles", 3),
-                                    new Birds("Ostriches", 15, false)
-                                };
-                List<Point> points = new List<Point>
-                                {
-                                    new(0, 0), new(0, 1), new(0, 2), new(0, 3), new(0, 4)
-                                };
-
-                _simulation = new Simulation(map, creatures, points, moves);
-                SizeX = map.SizeX;
-                SizeY = map.SizeY;
-            }
-
+            BigBounceMap map = new(8, 6);
+            List<Point> points = new List<Point>
+                            {
+                                new(0, 0), new(0, 1), new(0, 2), new(0, 3), new(0, 4)
+                            };
+            _simulation = new Simulation(map, creatures, points, moves);
+            SizeX = map.SizeX;
+            SizeY = map.SizeY;
             UpdateSymbols();
             GenerateMapGrid();
         }
@@ -87,7 +78,6 @@ namespace SimWeb.Pages
 
         private void UpdateSymbols()
         {
-            // Zaktualizuj symbole na podstawie aktualnych pozycji stworów
             Symbols = new Dictionary<Point, List<char>>();
             foreach (var mappable in _simulation.IMappables)
             {
@@ -128,17 +118,26 @@ namespace SimWeb.Pages
 
         public string GetImageSource(List<char> creatures)
         {
-            if (creatures.Contains('A'))
-                return "<img src='/images/Rabbit.png' alt='Rabbit' />";
+            bool isNight = CurrentRound % 4 < 2;
+            
             if (creatures.Contains('E'))
                 return "<img src='/images/Elf.png' alt='Elf' />";
             if (creatures.Contains('O'))
                 return "<img src='/images/Orc.png' alt='Orc' />";
-            if (creatures.Contains('B'))
-                return "<img src='/images/Eagle.png' alt='Eagle' />";
-            if (creatures.Contains('b'))
-                return "<img src='/images/Ostrich.png' alt='Ostrich' />";
 
+            if (isNight)
+            {
+                return "<img src='/images/Skeleton.png' alt='Skeleton' />";
+            }
+            else
+            {
+                if (creatures.Contains('A'))
+                    return "<img src='/images/Rabbit.png' alt='Rabbit' />";
+                if (creatures.Contains('B'))
+                    return "<img src='/images/Eagle.png' alt='Eagle' />";
+                if (creatures.Contains('b'))
+                    return "<img src='/images/Ostrich.png' alt='Ostrich' />";
+            }
             return "";
         }
 

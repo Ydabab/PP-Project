@@ -4,13 +4,12 @@
 */
 
 :root {
-    --dark-color: #2E073F;
-    --light-color: #EBD3F8;
-    --middle-color: #7A1CAC;
-    --accent-color: #AD49E1;
+    --dark-color: #040D12;
+    --middle-color: #183D3D;
+    --accent-color: #5C8374;
+    --light-color: #345B63;
 }
 
-/* Reset css */
 body, header h1, div, p {
     padding: 0;
     margin: 0;

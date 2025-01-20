@@ -2,78 +2,98 @@
 @using SimWeb.Pages
 @model SimulationModel
 @{
-    ViewData["Title"] = "Simulation page";
+ViewData["Title"] = "Simulation page";
 }
-<body>
-    <main>
-        <style>
-            .map {
-                grid-template-columns: max-content repeat(8, max-content);
-                grid-template-rows: repeat(6, 1fr) max-content;
-            }
-        </style>
+<style>
+    .map {
+        grid-template-columns: max-content repeat(8, max-content);
+        grid-template-rows: repeat(6, 1fr) max-content;
+    }
+</style>
+<style>
+    :root {
+        --dark-color: @(Model.CurrentRound % 4 < 2 ? "#040D12" : "#727D73");
+        --middle-color: @(Model.CurrentRound % 4 < 2 ? "#183D3D" : "#AAB99A");
+        --accent-color: @(Model.CurrentRound % 4 < 2 ? "#5C8374" : "#D0DDD0");
+        --light-color: @(Model.CurrentRound % 4 < 2 ? "#345B63" : "#F0F0D7");
+    }
+</style>
 
-        <div class="map-header">
-            <form method="post" asp-page-handler="Left">
-                <button type="submit">&larr;</button>
-                @Html.AntiForgeryToken()
-            </form>
+<div class="map-header">
+    <form method="post" asp-page-handler="Left">
+        <button type="submit" id="LeftButton">&larr;</button>
+        @Html.AntiForgeryToken()
+    </form>
 
-            <form method="post" asp-page-handler="Up">
-                <button type="submit">&uarr;</button>
-                @Html.AntiForgeryToken()
-            </form>
+    <form method="post" asp-page-handler="Up">
+        <button type="submit" id="UpButton">&uarr;</button>
+        @Html.AntiForgeryToken()
+    </form>
 
-            <div class="turn">
-                Tura @Model.CurrentTurn
-            </div>
+    <div class="turn">
+        Tura @Model.CurrentTurn
+    </div>
+    <div class="round">
+        Runda @Model.CurrentRound
+    </div>
 
-            <form method="post" asp-page-handler="Down">
-                <button type="submit">&darr;</button>
-                @Html.AntiForgeryToken()
-            </form>
+    <form method="post" asp-page-handler="Down">
+        <button type="submit" id="DownButton">&darr;</button>
+        @Html.AntiForgeryToken()
+    </form>
 
-            <form method="post" asp-page-handler="Right">
-                <button type="submit">&rarr;</button>
-                @Html.AntiForgeryToken()
-            </form>
-        </div>
+    <form method="post" asp-page-handler="Right">
+        <button type="submit" id="RightButton">&rarr;</button>
+        @Html.AntiForgeryToken()
+    </form>
+</div>
 
-        <div class="map">
-            @for (int row = 5; row >= 0; row--)
-            {
-                <p>@row</p>
-                @foreach (var cell in Model.MapGrid[row])
+<div class="map @(Model.CurrentRound % 4 < 2 ? "dark-map" : "light-map")">
+    @for (int row = 5; row >= 0; row--)
+    {
+        <p>@row</p>
+        @foreach (var cell in Model.MapGrid[row])
+        {
+            <div>
+                @if (cell.Creatures != null && cell.Creatures.Any())
                 {
-                    <div>
-                        @if (cell.Creatures != null && cell.Creatures.Any())
-                        {
-                            @Html.Raw(Model.GetImageSource(cell.Creatures))
-                        }
-                        else
-                        {
-                        <div></div>
-                            <style>
-                                .map {
-                                    display: grid;
-                                    grid-template-columns: max-content repeat(8, max-content);
-                                    grid-template-rows: repeat(6, 1fr) max-content;
-                                    max-width: 800px; /* Ustaw maksymalną szerokość */
-                                    max-height: 600px; /* Ustaw maksymalną wysokość */
-                                    margin: 0 auto; /* Wyśrodkuj grid */
-                                }
-                            </style>
-                        }
-                    </div>
+                    @Html.Raw(Model.GetImageSource(cell.Creatures))
                 }
-            }
+                else
+                {
+                    <div></div>
+                    <style>
+                        .map {
+                            display: grid;
+                            grid-template-columns: max-content repeat(8, max-content);
+                            grid-template-rows: repeat(6, 1fr) max-content;
+                            max-width: 800px; /* Ustaw maksymalną szerokość */
+                            max-height: 600px; /* Ustaw maksymalną wysokość */
+                            margin: 0 auto; /* Wyśrodkuj grid */
+                        }
+                    </style>
+                }
+            </div>
+        }
+    }
 
-            <!-- Grid for columns -->
-            <span></span>
-            @for (int i = 0; i < 8; i++)
-            {
-                <span>@i</span>
-            }
-        </div>
-    </main>
-</body>
+    <!-- Grid for columns -->
+    <span></span>
+    @for (int i = 0; i < 8; i++)
+    {
+        <span>@i</span>
+    }
+</div>
+<script>
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowRight') {
+            document.getElementById('RightButton').click();
+        } else if (event.key === 'ArrowLeft') {
+            document.getElementById('LeftButton').click();
+        } else if (event.key === 'ArrowUp') {
+            document.getElementById('UpButton').click();
+        } else if (event.key === 'ArrowDown') {
+            document.getElementById('DownButton').click();
+        }
+    });
+</script>

@@ -11,7 +11,7 @@
 
 .map > div {
     background-color: #558b2f;
-    outline: 1px dashed #112d4e;
+    outline: 1px dashed #ffffff;
     min-width: 80px;
     aspect-ratio: 1;
     display: flex;
@@ -52,4 +52,9 @@ button {
 img {
     max-width: 4rem;
     max-height: 4rem;
+}
+.dark-map > div {
+    background-color: #123449;
+    .light-map > div {
+    background-color: #a5d6a7; 
 }
