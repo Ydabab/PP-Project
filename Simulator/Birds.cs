@@ -21,7 +21,15 @@ public class Birds : Animals
     }
     public override string ToString()
     {
-        return $"{Description}";
+        if (CanFly)
+        {
+            return $"{Description}/Vampire";
+        }
+        else
+        {
+            return $"{Description}/Zombie";
+        }
+        
     }
     public override void Go(Direction direction)
     {

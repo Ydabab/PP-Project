@@ -46,6 +46,6 @@ public class Animals : IMappable
 
     public override string ToString()
     {
-        return $"{Description}";
+        return $"{Description}/Skeleton";
     }
 }

@@ -11,17 +11,19 @@ namespace SimWeb.Pages
         private static int _currentTurn = 0;
         private static List<char> moves = new List<char>();
         List<IMappable> creatures = new List<IMappable> {
-                                    new Orc("Gorbag"),
-                                    new Elf("Elandor"),
-                                    new Animals("Rabbits", 23),
-                                    new Birds("Eagles", 3),
-                                    new Birds("Ostriches", 15, false) };
+                                            new Orc("Gorbag"),
+                                            new Elf("Elandor"),
+                                            new Animals("Rabbits", 23),
+                                            new Birds("Eagles", 3),
+                                            new Birds("Ostriches", 15, false) };
         public Dictionary<Point, List<char>>? Symbols { get; private set; }
         public int SizeX { get; private set; }
         public int SizeY { get; private set; }
+
         public int CurrentTurn => _currentTurn;
         public int CurrentRound => _currentTurn / creatures.Count;
         public string CurrentCreature => creatures[_currentTurn % creatures.Count].ToString();
+        public List<string> EventLog { get; private set; } = new();
 
         public List<List<CreatureAtPoint>> MapGrid { get; set; } = new();
 
@@ -29,9 +31,9 @@ namespace SimWeb.Pages
         {
             BigBounceMap map = new(8, 6);
             List<Point> points = new List<Point>
-                            {
-                                new(0, 0), new(0, 1), new(0, 2), new(0, 3), new(0, 4)
-                            };
+                                    {
+                                        new(0, 0), new(0, 1), new(0, 2), new(0, 3), new(0, 4)
+                                    };
             _simulation = new Simulation(map, creatures, points, moves);
             SizeX = map.SizeX;
             SizeY = map.SizeY;
@@ -46,6 +48,8 @@ namespace SimWeb.Pages
             _simulation.Turn();
             UpdateSymbols();
             GenerateMapGrid();
+            HandleInteractions();
+
             return Page();
         }
 
@@ -56,6 +60,8 @@ namespace SimWeb.Pages
             _simulation.Turn();
             UpdateSymbols();
             GenerateMapGrid();
+            HandleInteractions();
+
             return Page();
         }
         public IActionResult OnPostUp()
@@ -65,6 +71,8 @@ namespace SimWeb.Pages
             _simulation.Turn();
             UpdateSymbols();
             GenerateMapGrid();
+            HandleInteractions();
+
             return Page();
         }
         public IActionResult OnPostDown()
@@ -74,6 +82,8 @@ namespace SimWeb.Pages
             _simulation.Turn();
             UpdateSymbols();
             GenerateMapGrid();
+            HandleInteractions();
+
             return Page();
         }
 
@@ -117,6 +127,58 @@ namespace SimWeb.Pages
             }
         }
 
+        private void HandleInteractions()
+        {
+            bool isNight = CurrentRound % 4 < 2; // Sprawdzenie, czy jest noc
+            var groups = _simulation.IMappables
+                .GroupBy(m => m.Position)
+                .Where(g => g.Count() > 1); // ZnajdŸ grupy w tym samym punkcie
+
+            foreach (var group in groups)
+            {
+                var position = group.Key;
+                var members = group.ToList();
+
+                var orc = members.OfType<Orc>().FirstOrDefault();
+                var animal = members.OfType<Animals>().FirstOrDefault();
+                var elf = members.OfType<Elf>().FirstOrDefault();
+
+                if (orc != null && animal != null)
+                {
+                    if (isNight)
+                    {
+                        creatures.Remove(animal);
+                        _simulation.IMappables.Remove(animal);
+                        AddToEventLog($"At night, Orc killed {animal}.");
+                    }
+                    else
+                    {
+                        creatures.Remove(orc);
+                        _simulation.IMappables.Remove(orc);
+                        AddToEventLog($"During the day, {animal} killed the Orc.");
+                    }
+                }
+
+                if (elf != null && animal != null)
+                {
+                    if (isNight)
+                    {
+                        creatures.Remove(elf);
+                        _simulation.IMappables.Remove(elf);
+                        AddToEventLog($"At night, {animal} killed the Elf.");
+                    }
+                    else
+                    {
+                        creatures.Remove(animal);
+                        _simulation.IMappables.Remove(animal);
+                        AddToEventLog($"During the day, Elf killed {animal}.");
+                    }
+                }
+            }
+
+            UpdateSymbols(); // Aktualizacja symboli po eliminacji
+        }
+
         public string GetImageSource(List<char> creatures)
         {
             bool isNight = CurrentRound % 4 < 2;
@@ -150,14 +212,23 @@ namespace SimWeb.Pages
             if (isNight)
             {
                 if (creatures.Contains('b'))
-                    return "<img src='/images/Zombie.png' alt='Zombie' />"; 
+                    return "<img src='/images/Zombie.png' alt='Zombie' />";
             }
             else
             {
                 if (creatures.Contains('b'))
-                    return "<img src='/images/Ostrich.png' alt='Ostrich--' />";
+                    return "<img src='/images/Ostrich.png' alt='Ostrich' />";
             }
             return "";
+        }
+
+        private void AddToEventLog(string message)
+        {
+            EventLog.Add(message);
+            if (EventLog.Count > 10) // Ogranicz liczbê logów w pamiêci do ostatnich 10.
+            {
+                EventLog.RemoveAt(0);
+            }
         }
 
         public class CreatureAtPoint

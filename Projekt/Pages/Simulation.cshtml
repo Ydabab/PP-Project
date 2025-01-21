@@ -120,6 +120,25 @@
     </div>
 </div>
 
+<div class="logger">
+    <h4>Wydarzenia</h4>
+    <ul style="list-style: none; padding: 0;">
+        @foreach (var log in Model.EventLog)
+        {
+            <li>@log</li>
+        }
+    </ul>
+</div>
+<div class="turn-order">
+    <h4>Kolejność ruchów</h4>
+    <ul style="list-style: none; padding: 0;">
+        @foreach (var creature in Model.TurnOrder)
+        {
+            <li style="@(creature.IsDead ? "text-decoration: line-through;" : "")">@creature.Name</li>
+        }
+    </ul>
+</div>
+
 <script>
     document.addEventListener('keydown', function(event) {
         if (event.key === 'ArrowRight') {
