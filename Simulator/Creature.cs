@@ -3,11 +3,11 @@
 namespace Simulator;
 public abstract class Creature : IMappable
 {
+    public bool IsDead { get; set; } = false;
     public Map? Map { get; private set; }
     public Point Position { get; private set; }
     private int level = 1;
     private string name = "Unknown";
-
     public string Name
     {
         get => name;

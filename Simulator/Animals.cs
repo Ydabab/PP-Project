@@ -9,7 +9,7 @@ public class Animals : IMappable
     public Map? Map { get; private set; }
     public Point Position { get; set; }
     private string description = "Unknown";
-
+    public bool IsDead { get; set; } = false;
     public string Description
     {
         get => description;
