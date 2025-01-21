@@ -96,3 +96,25 @@ img {
     border-radius: 5px; 
     font-family: Arial, sans-serif;
 }
+.order {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    width: 250px;
+    height: 200px;
+    overflow-y: auto;
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column
+}
+.order h4 {
+    margin-bottom: 5px;
+}
+
+.order ul li {
+    margin-bottom: 5px;
+}

@@ -51,9 +51,9 @@
             <div class="round @(Model.CurrentRound % 4 < 2 ? "dark-header" : "light-header")">
                 Runda @Model.CurrentRound
             </div>
-            <div class="creature @(Model.CurrentRound % 4 < 2 ? "dark-header" : "light-header")">
-                Obecna postać: @Model.CurrentCreature
-            </div>
+            @* <div class="creature @(Model.CurrentRound % 4 < 2 ? "dark-header" : "light-header")"> *@
+            @*     Obecna postać: @Model.CurrentCreature *@
+            @* </div> *@
         </div>
 
         <div class="map @(Model.CurrentRound % 4 < 2 ? "dark-map" : "light-map")">
@@ -129,16 +129,16 @@
         }
     </ul>
 </div>
-<div class="turn-order">
+<div class="order">
     <h4>Kolejność ruchów</h4>
     <ul style="list-style: none; padding: 0;">
-        @foreach (var creature in Model.TurnOrder)
-        {
-            <li style="@(creature.IsDead ? "text-decoration: line-through;" : "")">@creature.Name</li>
-        }
+    <li>Ork</li>
+    <li>Elf</li>
+    <li>Rabbits/Skeleon</li>
+    <li>Eagle/Vampire</li>
+    <li>Ostrich/Zombie</li>
     </ul>
 </div>
-
 <script>
     document.addEventListener('keydown', function(event) {
         if (event.key === 'ArrowRight') {

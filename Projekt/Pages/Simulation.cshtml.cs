@@ -10,7 +10,7 @@ namespace SimWeb.Pages
         private static Simulation _simulation;
         private static int _currentTurn = 0;
         private static List<char> moves = new List<char>();
-        List<IMappable> creatures = new List<IMappable> {
+        public List<IMappable> creatures = new List<IMappable> {
                                             new Orc("Gorbag"),
                                             new Elf("Elandor"),
                                             new Animals("Rabbits", 23),
