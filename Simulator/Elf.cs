@@ -23,7 +23,10 @@ public class Elf : Creature
     {
         Agility = agility;
     }
-    public override string Info => $"{Name} [{Level}][{Agility}]";
-
+    //public override string Info => $"{Name} [{Level}][{Agility}]";
+    public override string ToString()
+    {
+        return $"Elf";
+    }
     public override char Symbol => 'E';
 }

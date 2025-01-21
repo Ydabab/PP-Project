@@ -41,18 +41,16 @@ public abstract class Creature : IMappable
     public void Go(Direction direction)
     {
         if (Map == null)
-            return; // Jeśli stwór nie ma mapy, nic nie robimy.
+            return;
 
         Point nextPosition = Map.Next(Position, direction);
-        Map.Move((IMappable)this, Position, nextPosition); // Przemieszczanie stworów
+        Map.Move((IMappable)this, Position, nextPosition);
         Position = nextPosition;
     }
 
 
-    public abstract string Info { get; }
     public abstract char Symbol { get; }
 
-    public override string ToString() => $"{GetType().Name.ToUpper()}: {Info}";
 
 
 }

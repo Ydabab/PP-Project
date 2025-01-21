@@ -6,20 +6,23 @@ public class Birds : Animals
 {
     public bool CanFly { get; set; } = true;
     public override char Symbol => CanFly ? 'B' : 'b';
-    public override string Info
-    {
-        get
-        {
-            string flyAbility = CanFly ? "fly+" : "fly-";
-            return $"{Description} ({flyAbility}) <{Size}>";
-        }
-    }
+    //public override string Info
+    //{
+    //    get
+    //    {
+    //        string flyAbility = CanFly ? "fly+" : "fly-";
+    //        return $"{Description} ({flyAbility}) <{Size}>";
+    //    }
+    //}
     public Birds() { }
     public Birds(string description = "Unknown Bird", int size = 3, bool canFly = true) : base(description, size)
     {
         CanFly = canFly;
     }
-
+    public override string ToString()
+    {
+        return $"{Description}";
+    }
     public override void Go(Direction direction)
     {
         if (Map == null)

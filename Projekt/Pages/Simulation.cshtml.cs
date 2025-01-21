@@ -21,6 +21,7 @@ namespace SimWeb.Pages
         public int SizeY { get; private set; }
         public int CurrentTurn => _currentTurn;
         public int CurrentRound => _currentTurn / creatures.Count;
+        public string CurrentCreature => creatures[_currentTurn % creatures.Count].ToString();
 
         public List<List<CreatureAtPoint>> MapGrid { get; set; } = new();
 
@@ -119,7 +120,7 @@ namespace SimWeb.Pages
         public string GetImageSource(List<char> creatures)
         {
             bool isNight = CurrentRound % 4 < 2;
-            
+
             if (creatures.Contains('E'))
                 return "<img src='/images/Elf.png' alt='Elf' />";
             if (creatures.Contains('O'))
@@ -127,16 +128,34 @@ namespace SimWeb.Pages
 
             if (isNight)
             {
-                return "<img src='/images/Skeleton.png' alt='Skeleton' />";
+                if (creatures.Contains('A'))
+                    return "<img src='/images/Skeleton.png' alt='Skeleton' />";
             }
             else
             {
                 if (creatures.Contains('A'))
                     return "<img src='/images/Rabbit.png' alt='Rabbit' />";
+            }
+
+            if (isNight)
+            {
+                if (creatures.Contains('B'))
+                    return "<img src='/images/Vampire.png' alt='Vampire' />";
+            }
+            else
+            {
                 if (creatures.Contains('B'))
                     return "<img src='/images/Eagle.png' alt='Eagle' />";
+            }
+            if (isNight)
+            {
                 if (creatures.Contains('b'))
-                    return "<img src='/images/Ostrich.png' alt='Ostrich' />";
+                    return "<img src='/images/Zombie.png' alt='Zombie' />"; 
+            }
+            else
+            {
+                if (creatures.Contains('b'))
+                    return "<img src='/images/Ostrich.png' alt='Ostrich--' />";
             }
             return "";
         }

@@ -9,23 +9,23 @@
 }
 
 
-.map > div {
-    background-color: #558b2f;
-    outline: 1px dashed #ffffff;
-    min-width: 80px;
-    aspect-ratio: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .map > div {
+        background-color: #558b2f;
+        outline: 1px dashed #ffffff;
+        min-width: 80px;
+        aspect-ratio: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-.map > p {
-    padding-right: .4rem;
-}
+    .map > p {
+        padding-right: .4rem;
+    }
 
-.map > span {
-    padding-top: .2rem;
-}
+    .map > span {
+        padding-top: .2rem;
+    }
 
 
 .map-header {
@@ -42,7 +42,6 @@
 .turn {
     min-width: 11rem;
 }
-
 button {
     min-width: 4rem;
     min-height: 3rem;
@@ -53,8 +52,33 @@ img {
     max-width: 4rem;
     max-height: 4rem;
 }
+
 .dark-map > div {
     background-color: #123449;
-    .light-map > div {
-    background-color: #a5d6a7; 
+}
+
+.light-map > div {
+    background-color: #a5d6a7;
+}
+
+.page {
+    display: flex;
+    justify-content: space-between;
+}
+
+.arrows {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15%;
+}
+
+.threeArrows {
+    display: flex;
+    flex-direction: row;
+}
+.light-header {
+    color: black;
+}
+.dark-header {
+    color: white;
 }
