@@ -32,7 +32,7 @@ namespace SimWeb.Pages
             BigBounceMap map = new(8, 6);
             List<Point> points = new List<Point>
                                     {
-                                        new(0, 0), new(0, 1), new(0, 2), new(0, 3), new(0, 4)
+                                        new(7, 1), new(7, 4), new(0, 0), new(0, 2), new(0, 4)
                                     };
             _simulation = new Simulation(map, creatures, points, moves);
             SizeX = map.SizeX;
